@@ -4,13 +4,19 @@
 
 you must use cmake.
 
-``` shell script
+```shell script
+
+$ brew install gcc
+
 $ brew install cmake
 ``` 
 
 ## How to run
 
-``` shell script
+### First method
+
+You have to install gcc(gfortran) and make, cmake for local environment.
+```shell script
 # コンパイルから実行までまとめて行う
 $ make dev
 
