@@ -6,5 +6,6 @@ set(EXECUTABLE main)
 
 add_executable(main
         main.f90
+        src/array.f90
         src/math.f90
 )
