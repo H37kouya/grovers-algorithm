@@ -5,7 +5,6 @@ program main
     implicit none
 
     double precision :: groverQuantumSearchAbs
-    double precision, dimension(2 ** 6) :: cArrNormalization
     complex(kind(0d0)), dimension(2 ** 6) :: cArr, groverQuantumSearch, groverQuantumSearchBefore
     integer :: groverQuantumSearchLoop = 12
     complex(kind(0d0)), dimension(12) :: groverQuantumSearchOnlyTarget, groverQuantumSearchNoTarget
@@ -17,18 +16,17 @@ program main
     ! ファイル書き込み用に現在時刻の取得
     call date_and_time(date, time)
     path = '/mnt/c/Users/kouya/code/fortran-cmake/outputs/'
-    cArrNormalization = array_normalization(size(cArrNormalization))
-    cArr = array_normalization_to_sqrt_complex(cArrNormalization)
-    maxIdx = array_max_index(cArrNormalization)
-    minIdx = array_min_index(cArrNormalization)
+    cArr = array_normalization(size(cArr))
+    maxIdx = array_max_index(cArr)
+    minIdx = array_min_index(cArr)
 
     ! 正規化された値と計算前の複素数のファイルへの書き込み.
     open(18, file=trim(path)//date//'_'//time//'_complex'//'.csv', status='new')
     write(18, *) 'no,probability,probability(%),real,aimag,complex'
-    do i = 1, size(cArrNormalization)
+    do i = 1, size(cArr)
         write (tmpChar1,*) i
-        write (tmpChar2,*) cArrNormalization(i)
-        write (tmpChar3,*) cArrNormalization(i) * 100
+        write (tmpChar2,*) abs(cArr(i)) ** 2
+        write (tmpChar3,*) abs(cArr(i)) ** 2 * 100
         write (tmpChar4,*) real(cArr(i))
         write (tmpChar5,*) aimag(cArr(i))
         tmpChar1 = adjustl(tmpChar1)
