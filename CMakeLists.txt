@@ -6,6 +6,7 @@ set(EXECUTABLE main)
 
 add_executable(main
         main.f90
-        src/array.f90
-        src/math.f90
+        src/lib/array.f90
+        src/lib/math.f90
+        src/usecase/groverQuantumSearchUsecase.f90
 )
