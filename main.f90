@@ -5,10 +5,10 @@ program main
     implicit none
 
     double precision :: groverQuantumSearchAbs
-    complex(kind(0d0)), dimension(2 ** 6) :: cArr, groverQuantumSearch, groverQuantumSearchBefore
-    integer :: groverQuantumSearchLoop = 12
-    complex(kind(0d0)), dimension(12) :: groverQuantumSearchOnlyTarget, groverQuantumSearchNoTarget
-    complex(kind(0d0)), dimension(12) :: groverQuantumSearchNoMaxTarget, groverQuantumSearchNoMinTarget
+    complex(kind(0d0)), dimension(2 ** 15) :: cArr, groverQuantumSearch, groverQuantumSearchBefore
+    integer :: groverQuantumSearchLoop = 2 ** 15 * 2
+    complex(kind(0d0)), dimension( 2 ** 15 * 2) :: groverQuantumSearchOnlyTarget, groverQuantumSearchNoTarget
+    complex(kind(0d0)), dimension( 2 ** 15 * 2) :: groverQuantumSearchNoMaxTarget, groverQuantumSearchNoMinTarget
     character(8) :: date
     character(10) :: time
     character(128) :: path, tmpChar1, tmpChar2, tmpChar3, tmpChar4, tmpChar5
@@ -46,25 +46,25 @@ program main
         groverQuantumSearch = groverQuantumSearchOnce(groverQuantumSearchBefore, groverQuantumSearchTarget)
         write (tmpChar1,*) i
         tmpChar1 = adjustl(tmpChar1)
-        open(18, file=trim(path)//date//'_'//time//'_result_'//trim(tmpChar1)//'.csv', status='new')
-        write(18, *) 'no,real,aimag,complex,target'
-
-        do j = 1, size(groverQuantumSearch)
-            write (tmpChar2,*) j
-            write (tmpChar3,*) real(groverQuantumSearch(j))
-            write (tmpChar4,*) aimag(groverQuantumSearch(j))
-            tmpChar2 = adjustl(tmpChar2)
-            tmpChar3 = adjustl(tmpChar3)
-            tmpChar4 = adjustl(tmpChar4)
-            if (j == groverQuantumSearchTarget) then
-                tmpChar1 = 'true'
-            else
-                tmpChar1 = 'false'
-            end if
-            tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
-            write(18, *) trim(adjustl(tmpChar2))//','//trim(adjustl(tmpChar5))//','//trim(adjustl(tmpChar1))
-        end do
-        close(18)
+!        open(18, file=trim(path)//date//'_'//time//'_result_'//trim(tmpChar1)//'.csv', status='new')
+!        write(18, *) 'no,real,aimag,complex,target'
+!
+!        do j = 1, size(groverQuantumSearch)
+!            write (tmpChar2,*) j
+!            write (tmpChar3,*) real(groverQuantumSearch(j))
+!            write (tmpChar4,*) aimag(groverQuantumSearch(j))
+!            tmpChar2 = adjustl(tmpChar2)
+!            tmpChar3 = adjustl(tmpChar3)
+!            tmpChar4 = adjustl(tmpChar4)
+!            if (j == groverQuantumSearchTarget) then
+!                tmpChar1 = 'true'
+!            else
+!                tmpChar1 = 'false'
+!            end if
+!            tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
+!            write(18, *) trim(adjustl(tmpChar2))//','//trim(adjustl(tmpChar5))//','//trim(adjustl(tmpChar1))
+!        end do
+!        close(18)
 
         groverQuantumSearchOnlyTarget(i) = groverQuantumSearch(groverQuantumSearchTarget)
         groverQuantumSearchNoTarget(i) = groverQuantumSearch(groverQuantumSearchTarget + 1)
