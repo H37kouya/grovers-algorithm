@@ -2,14 +2,17 @@ program main
     use array
     use math
     use groverQuantumSearchUsecase
+    use main_file
     implicit none
 
     double precision :: groverQuantumSearchAbs
-    complex(kind(0d0)), dimension(2 ** 15) :: cArr, groverQuantumSearch, groverQuantumSearchBefore
-    integer :: groverQuantumSearchLoop = 2 ** 15 * 2
-    complex(kind(0d0)), dimension( 2 ** 15 * 2) :: groverQuantumSearchOnlyTarget, groverQuantumSearchNoTarget
-    complex(kind(0d0)), dimension( 2 ** 15 * 2) :: groverQuantumSearchNoMaxTarget, groverQuantumSearchNoMinTarget
+    complex(kind(0d0)), dimension(2 ** 8) :: cArr, groverQuantumSearch, groverQuantumSearchBefore
+    integer :: groverQuantumSearchLoop = 2 ** 8 * 2
+    complex(kind(0d0)), dimension( 2 ** 8 * 2) :: groverQuantumSearchOnlyTarget, groverQuantumSearchNoTarget
+    complex(kind(0d0)), dimension( 2 ** 8 * 2) :: groverQuantumSearchNoMaxTarget, groverQuantumSearchNoMinTarget
+    ! 今日の日付
     character(8) :: date
+    ! 現在の時刻
     character(10) :: time
     character(128) :: path, tmpChar1, tmpChar2, tmpChar3, tmpChar4, tmpChar5
     integer :: i, j, groverQuantumSearchTarget, maxIdx, minIdx
@@ -17,12 +20,12 @@ program main
     call date_and_time(date, time)
     path = '/mnt/c/Users/kouya/code/fortran-cmake/outputs/'
     cArr = array_normalization(size(cArr))
-    maxIdx = array_max_index(cArr)
-    minIdx = array_min_index(cArr)
+    maxIdx = array_max_index(cArr) ! 絶対値が最も大きな配列を種痘
+    minIdx = array_min_index(cArr) ! 絶対値が最も小さな配列を種痘
 
     ! 正規化された値と計算前の複素数のファイルへの書き込み.
     open(18, file=trim(path)//date//'_'//time//'_complex'//'.csv', status='new')
-    write(18, *) 'no,probability,probability(%),real,aimag,complex'
+    write(18, *) 'no,probability,probability(%),real,aimag'
     do i = 1, size(cArr)
         write (tmpChar1,*) i
         write (tmpChar2,*) abs(cArr(i)) ** 2
@@ -35,7 +38,7 @@ program main
         tmpChar4 = adjustl(tmpChar4)
         tmpChar5 = adjustl(tmpChar5)
         tmpChar1 = trim(tmpChar1)//','//trim(tmpChar2)//','//trim(tmpChar3)
-        tmpChar2 = trim(tmpChar4)//','//trim(tmpChar5)//','//trim(tmpChar4)//'+i'//trim(tmpChar5)
+        tmpChar2 = trim(tmpChar4)//','//trim(tmpChar5)
         write(18, *) trim(adjustl(tmpChar1))//','//trim(adjustl(tmpChar2))
     end do
     close(18)
@@ -74,76 +77,19 @@ program main
         groverQuantumSearchBefore = groverQuantumSearch
     end do
 
+    ! 検索条件のみのファイル作成
+    tmpChar1 = trim(path)//date//'_'//time//'_result_target_only.csv'
+    i = grover_quantum_search_in_file(groverQuantumSearchOnlyTarget, tmpChar1)
 
-    open(18, file=trim(path)//date//'_'//time//'_result_target.csv', status='new')
-    write(18, *) 'no,real,aimag,complex,abs,abs^2'
-    do i = 1, size(groverQuantumSearchOnlyTarget)
-        write (tmpChar2,*) i
-        write (tmpChar3,*) real(groverQuantumSearchOnlyTarget(i))
-        write (tmpChar4,*) aimag(groverQuantumSearchOnlyTarget(i))
-        tmpChar2 = adjustl(tmpChar2)
-        tmpChar3 = adjustl(tmpChar3)
-        tmpChar4 = adjustl(tmpChar4)
-        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
-        groverQuantumSearchAbs = abs(groverQuantumSearchOnlyTarget(i))
-        write (tmpChar1,*) groverQuantumSearchAbs
-        write (tmpChar3,*) groverQuantumSearchAbs ** 2
-        tmpChar1 = trim(adjustl(tmpChar2))//','//trim(adjustl(tmpChar5))//','//trim(adjustl(tmpChar1))
-        write(18, *) trim(adjustl(tmpChar1))//','//trim(adjustl(tmpChar3))
-    end do
-    close(18)
+    ! 検索条件ではない値のファイル作成
+    tmpChar1 = trim(path)//date//'_'//time//'_result_target_no1.csv'
+    i = grover_quantum_search_in_file(groverQuantumSearchNoTarget, tmpChar1)
 
-    open(18, file=trim(path)//date//'_'//time//'_result_target_no1.csv', status='new')
-    write(18, *) 'no,real,aimag,complex,abs,abs^2'
-    do i = 1, size(groverQuantumSearchNoTarget)
-        write (tmpChar2,*) i
-        write (tmpChar3,*) real(groverQuantumSearchNoTarget(i))
-        write (tmpChar4,*) aimag(groverQuantumSearchNoTarget(i))
-        tmpChar2 = adjustl(tmpChar2)
-        tmpChar3 = adjustl(tmpChar3)
-        tmpChar4 = adjustl(tmpChar4)
-        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
-        groverQuantumSearchAbs = abs(groverQuantumSearchNoTarget(i))
-        write (tmpChar1,*) groverQuantumSearchAbs
-        write (tmpChar3,*) groverQuantumSearchAbs ** 2
-        tmpChar1 = trim(adjustl(tmpChar2))//','//trim(adjustl(tmpChar5))//','//trim(adjustl(tmpChar1))
-        write(18, *) trim(adjustl(tmpChar1))//','//trim(adjustl(tmpChar3))
-    end do
-    close(18)
+    ! 検索条件ではなく、絶対値が最も大きい値のファイル作成
+    tmpChar1 = trim(path)//date//'_'//time//'_result_target_no1_max.csv'
+    i = grover_quantum_search_in_file(groverQuantumSearchNoMaxTarget, tmpChar1)
 
-    open(18, file=trim(path)//date//'_'//time//'_result_target_no1_max.csv', status='new')
-    write(18, *) 'no,real,aimag,complex,abs,abs^2'
-    do i = 1, size(groverQuantumSearchNoMaxTarget)
-        write (tmpChar2,*) i
-        write (tmpChar3,*) real(groverQuantumSearchNoMaxTarget(i))
-        write (tmpChar4,*) aimag(groverQuantumSearchNoMaxTarget(i))
-        tmpChar2 = adjustl(tmpChar2)
-        tmpChar3 = adjustl(tmpChar3)
-        tmpChar4 = adjustl(tmpChar4)
-        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
-        groverQuantumSearchAbs = abs(groverQuantumSearchNoMaxTarget(i))
-        write (tmpChar1,*) groverQuantumSearchAbs
-        write (tmpChar3,*) groverQuantumSearchAbs ** 2
-        tmpChar1 = trim(adjustl(tmpChar2))//','//trim(adjustl(tmpChar5))//','//trim(adjustl(tmpChar1))
-        write(18, *) trim(adjustl(tmpChar1))//','//trim(adjustl(tmpChar3))
-    end do
-    close(18)
-
-    open(18, file=trim(path)//date//'_'//time//'_result_target_no1_min.csv', status='new')
-    write(18, *) 'no,real,aimag,complex,abs,abs^2'
-    do i = 1, size(groverQuantumSearchNoMinTarget)
-        write (tmpChar2,*) i
-        write (tmpChar3,*) real(groverQuantumSearchNoMinTarget(i))
-        write (tmpChar4,*) aimag(groverQuantumSearchNoMinTarget(i))
-        tmpChar2 = adjustl(tmpChar2)
-        tmpChar3 = adjustl(tmpChar3)
-        tmpChar4 = adjustl(tmpChar4)
-        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
-        groverQuantumSearchAbs = abs(groverQuantumSearchNoMinTarget(i))
-        write (tmpChar1,*) groverQuantumSearchAbs
-        write (tmpChar3,*) groverQuantumSearchAbs ** 2
-        tmpChar1 = trim(adjustl(tmpChar2))//','//trim(adjustl(tmpChar5))//','//trim(adjustl(tmpChar1))
-        write(18, *) trim(adjustl(tmpChar1))//','//trim(adjustl(tmpChar3))
-    end do
-    close(18)
+    ! 検索条件ではなく、絶対値が最も小さい値のファイル作成
+    tmpChar1 = trim(path)//date//'_'//time//'_result_target_no1_min.csv'
+    i = grover_quantum_search_in_file(groverQuantumSearchNoMinTarget, tmpChar1)
 end program main
