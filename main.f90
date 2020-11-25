@@ -5,10 +5,10 @@ program main
     implicit none
 
     double precision :: groverQuantumSearchAbs
-    complex(kind(0d0)), dimension(2 ** 15) :: cArr, groverQuantumSearch, groverQuantumSearchBefore
-    integer :: groverQuantumSearchLoop = 2 ** 15 * 2
-    complex(kind(0d0)), dimension( 2 ** 15 * 2) :: groverQuantumSearchOnlyTarget, groverQuantumSearchNoTarget
-    complex(kind(0d0)), dimension( 2 ** 15 * 2) :: groverQuantumSearchNoMaxTarget, groverQuantumSearchNoMinTarget
+    complex(kind(0d0)), dimension(2 ** 8) :: cArr, groverQuantumSearch, groverQuantumSearchBefore
+    integer :: groverQuantumSearchLoop = 2 ** 8 * 2
+    complex(kind(0d0)), dimension( 2 ** 8 * 2) :: groverQuantumSearchOnlyTarget, groverQuantumSearchNoTarget
+    complex(kind(0d0)), dimension( 2 ** 8 * 2) :: groverQuantumSearchNoMaxTarget, groverQuantumSearchNoMinTarget
     character(8) :: date
     character(10) :: time
     character(128) :: path, tmpChar1, tmpChar2, tmpChar3, tmpChar4, tmpChar5
