@@ -22,7 +22,7 @@ program main
 
     ! 正規化された値と計算前の複素数のファイルへの書き込み.
     open(18, file=trim(path)//date//'_'//time//'_complex'//'.csv', status='new')
-    write(18, *) 'no,probability,probability(%),real,aimag,complex'
+    write(18, *) 'no,probability,probability(%),real,aimag'
     do i = 1, size(cArr)
         write (tmpChar1,*) i
         write (tmpChar2,*) abs(cArr(i)) ** 2
@@ -35,7 +35,7 @@ program main
         tmpChar4 = adjustl(tmpChar4)
         tmpChar5 = adjustl(tmpChar5)
         tmpChar1 = trim(tmpChar1)//','//trim(tmpChar2)//','//trim(tmpChar3)
-        tmpChar2 = trim(tmpChar4)//','//trim(tmpChar5)//','//trim(tmpChar4)//'+i'//trim(tmpChar5)
+        tmpChar2 = trim(tmpChar4)//','//trim(tmpChar5)
         write(18, *) trim(adjustl(tmpChar1))//','//trim(adjustl(tmpChar2))
     end do
     close(18)
@@ -76,7 +76,7 @@ program main
 
 
     open(18, file=trim(path)//date//'_'//time//'_result_target.csv', status='new')
-    write(18, *) 'no,real,aimag,complex,abs,abs^2'
+    write(18, *) 'no,real,aimag,abs,abs^2'
     do i = 1, size(groverQuantumSearchOnlyTarget)
         write (tmpChar2,*) i
         write (tmpChar3,*) real(groverQuantumSearchOnlyTarget(i))
@@ -84,7 +84,7 @@ program main
         tmpChar2 = adjustl(tmpChar2)
         tmpChar3 = adjustl(tmpChar3)
         tmpChar4 = adjustl(tmpChar4)
-        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
+        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)
         groverQuantumSearchAbs = abs(groverQuantumSearchOnlyTarget(i))
         write (tmpChar1,*) groverQuantumSearchAbs
         write (tmpChar3,*) groverQuantumSearchAbs ** 2
@@ -94,7 +94,7 @@ program main
     close(18)
 
     open(18, file=trim(path)//date//'_'//time//'_result_target_no1.csv', status='new')
-    write(18, *) 'no,real,aimag,complex,abs,abs^2'
+    write(18, *) 'no,real,aimag,abs,abs^2'
     do i = 1, size(groverQuantumSearchNoTarget)
         write (tmpChar2,*) i
         write (tmpChar3,*) real(groverQuantumSearchNoTarget(i))
@@ -102,7 +102,7 @@ program main
         tmpChar2 = adjustl(tmpChar2)
         tmpChar3 = adjustl(tmpChar3)
         tmpChar4 = adjustl(tmpChar4)
-        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
+        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)
         groverQuantumSearchAbs = abs(groverQuantumSearchNoTarget(i))
         write (tmpChar1,*) groverQuantumSearchAbs
         write (tmpChar3,*) groverQuantumSearchAbs ** 2
@@ -112,7 +112,7 @@ program main
     close(18)
 
     open(18, file=trim(path)//date//'_'//time//'_result_target_no1_max.csv', status='new')
-    write(18, *) 'no,real,aimag,complex,abs,abs^2'
+    write(18, *) 'no,real,aimag,abs,abs^2'
     do i = 1, size(groverQuantumSearchNoMaxTarget)
         write (tmpChar2,*) i
         write (tmpChar3,*) real(groverQuantumSearchNoMaxTarget(i))
@@ -120,7 +120,7 @@ program main
         tmpChar2 = adjustl(tmpChar2)
         tmpChar3 = adjustl(tmpChar3)
         tmpChar4 = adjustl(tmpChar4)
-        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
+        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)
         groverQuantumSearchAbs = abs(groverQuantumSearchNoMaxTarget(i))
         write (tmpChar1,*) groverQuantumSearchAbs
         write (tmpChar3,*) groverQuantumSearchAbs ** 2
@@ -130,7 +130,7 @@ program main
     close(18)
 
     open(18, file=trim(path)//date//'_'//time//'_result_target_no1_min.csv', status='new')
-    write(18, *) 'no,real,aimag,complex,abs,abs^2'
+    write(18, *) 'no,real,aimag,abs,abs^2'
     do i = 1, size(groverQuantumSearchNoMinTarget)
         write (tmpChar2,*) i
         write (tmpChar3,*) real(groverQuantumSearchNoMinTarget(i))
@@ -138,7 +138,7 @@ program main
         tmpChar2 = adjustl(tmpChar2)
         tmpChar3 = adjustl(tmpChar3)
         tmpChar4 = adjustl(tmpChar4)
-        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)//','//trim(tmpChar3)//'+i'//trim(tmpChar4)
+        tmpChar5 = trim(tmpChar3)//','//trim(tmpChar4)
         groverQuantumSearchAbs = abs(groverQuantumSearchNoMinTarget(i))
         write (tmpChar1,*) groverQuantumSearchAbs
         write (tmpChar3,*) groverQuantumSearchAbs ** 2
