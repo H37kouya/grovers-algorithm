@@ -77,25 +77,16 @@ contains
     ! 正規化された配列を生成する
     function array_normalization(quantity) result(ret)
         integer :: quantity
-        double precision, dimension(quantity * 4) :: randArr
+        double precision, dimension(quantity * 2) :: randArr
         complex(kind(0d0)), dimension(quantity) :: ret
         double precision total
         integer i
 
+        ! -0.5引く
         total = 0
         randArr = rand(size(randArr))
         do i = 1, quantity
-            ret(i) = complex(randArr(4*i - 3), randArr(4*i - 2))
-
-            ! ランダムで実部を負にする
-            if (randArr(4*i - 1) > 0.5d0) then
-                ret(i) = complex(-1 * real(ret(i)), aimag(ret(i)))
-            end if
-
-            ! ランダムで虚部を負にする
-            if (randArr(4*i) > 0.5d0) then
-                ret(i) = conjg(ret(i))
-            end if
+            ret(i) = complex(randArr(2*i - 1) - 0.5d0, randArr(2*i) - 0.5d0)
 
             total = total + abs(ret(i)) ** 2
         end do

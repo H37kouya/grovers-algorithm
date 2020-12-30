@@ -12,7 +12,7 @@ contains
         complex(kind(0d0)), dimension(size(arr)) :: output
         complex(kind(0d0)), dimension(size(arr)) :: arrDoSignInversion, arrAllDoSignInversion
         complex(kind(0d0)) :: averageDoSingInversion
-        integer target
+        integer, dimension(:) :: target
 
         !1 オラクルUf いわゆる、γ
         arrDoSignInversion = array_sign_inversion(arr, (/ target /))

@@ -5,10 +5,10 @@ program main
     implicit none
 
     double precision :: groverQuantumSearchAbs
-    complex(kind(0d0)), dimension(2 ** 8) :: cArr, groverQuantumSearch, groverQuantumSearchBefore
-    integer :: groverQuantumSearchLoop = 2 ** 8 * 2
-    complex(kind(0d0)), dimension( 2 ** 8 * 2) :: groverQuantumSearchOnlyTarget, groverQuantumSearchNoTarget
-    complex(kind(0d0)), dimension( 2 ** 8 * 2) :: groverQuantumSearchNoMaxTarget, groverQuantumSearchNoMinTarget
+    complex(kind(0d0)), dimension(2 ** 10) :: cArr, groverQuantumSearch, groverQuantumSearchBefore
+    integer :: groverQuantumSearchLoop = 2 ** 10 * 2
+    complex(kind(0d0)), dimension( 2 ** 10 * 2) :: groverQuantumSearchOnlyTarget, groverQuantumSearchNoTarget
+    complex(kind(0d0)), dimension( 2 ** 10 * 2) :: groverQuantumSearchNoMaxTarget, groverQuantumSearchNoMinTarget
     character(8) :: date
     character(10) :: time
     character(128) :: path, tmpChar1, tmpChar2, tmpChar3, tmpChar4, tmpChar5
@@ -19,6 +19,11 @@ program main
     cArr = array_normalization(size(cArr))
     maxIdx = array_max_index(cArr)
     minIdx = array_min_index(cArr)
+    ! オフセットを与える
+    cArr = array_add_complex_to_each_value(cArr, complex(0.005d0, 0.005d0))
+
+    write(*,*) sum(dble(cArr))
+    write(*,*) sum(aimag(cArr))
 
     ! 正規化された値と計算前の複素数のファイルへの書き込み.
     open(18, file=trim(path)//date//'_'//time//'_complex'//'.csv', status='new')
@@ -43,7 +48,7 @@ program main
     groverQuantumSearchBefore = cArr
     groverQuantumSearchTarget = 1
     do i = 1, groverQuantumSearchLoop
-        groverQuantumSearch = groverQuantumSearchOnce(groverQuantumSearchBefore, groverQuantumSearchTarget)
+        groverQuantumSearch = groverQuantumSearchOnce(groverQuantumSearchBefore, (/ 1, 2 /))
         write (tmpChar1,*) i
         tmpChar1 = adjustl(tmpChar1)
 !        open(18, file=trim(path)//date//'_'//time//'_result_'//trim(tmpChar1)//'.csv', status='new')
@@ -73,7 +78,6 @@ program main
 
         groverQuantumSearchBefore = groverQuantumSearch
     end do
-
 
     open(18, file=trim(path)//date//'_'//time//'_result_target.csv', status='new')
     write(18, *) 'no,real,aimag,complex,abs,abs^2'
